@@ -12,6 +12,6 @@ result = a.delete_topics(topic_to_delete)
 for topic, f in result.items():
     try:
         f.result()  # The result itself is None
-        print("Topic {} delete".format(topic))
+        print("Topic {} deleted".format(topic))
     except Exception as e:
         print("Failed to delete topic {}: {}".format(topic, e))

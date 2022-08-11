@@ -1,21 +1,38 @@
 from confluent_kafka import Producer
 import requests
+import json
 
 producer = Producer({'bootstrap.servers': '127.0.0.1:9092'})
+topic = "weather"
 
-response_format = "json"
-lon = "24.10"
-lat = "59.94"
-product = "civillight"
+# Option 1:
+# response_format = "json"
+# lon = "24.10"
+# lat = "59.94"
+# product = "civillight"
 
-response = requests.get(
-    "http://www.7timer.info/bin/api.pl?lon={}&lat={}product={}&output={}".format(
-        lon, lat, product, response_format
-    )
-)
+# url = "http://www.7timer.info/bin/api.pl?lon={}&lat={}&product={}&output={}".format(
+#     lon, lat, product, response_format
+# )
 
-json_msg = response.json()
+# response = requests.get(url)
 
+# Option 2:
+params = {
+    "lon": "24.10",
+    "lat": "59.94",
+    "product": "civillight",
+    "output": "json",
+}
+
+url = "http://www.7timer.info/bin/api.pl"
+response = requests.get(url, params=params)
+
+try:
+    json_msg = response.json()
+    print(json_msg)
+except:
+    raise Exception("Response not in JSON form. Response: '{}'.".format(response.text))
 
 def delivery_report(err, msg):
     """ Called once for each message produced to indicate delivery result.
@@ -23,10 +40,10 @@ def delivery_report(err, msg):
     if err is not None:
         print('Message delivery failed: {}'.format(err))
     else:
-        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
+        print('Message delivered to {}, partition [{}]'.format(msg.topic(), msg.partition()))
 
 
-producer.produce('simple_topic', json_msg.encode('utf-8'), callback=delivery_report)
+producer.produce(topic, json.dumps(json_msg).encode('utf-8'), callback=delivery_report)
 
 
 producer.flush()
