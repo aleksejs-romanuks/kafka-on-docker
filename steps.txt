@@ -1,0 +1,48 @@
+sudo apt-get update
+
+# getting docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+VERSION=20.10 sh ./get-docker.sh
+
+# start containers
+sudo docker compose up -d
+
+# stop containers
+docker compose down
+
+# access continer:
+sudo docker exec -it broker bash
+
+# first topic:
+
+kafka-topics --bootstrap-server broker:9092 \
+  --create \
+  --topic quickstart
+
+
+kafka-console-producer --bootstrap-server broker:9092 \
+  --topic quickstart
+
+
+kafka-console-consumer --bootstrap-server broker:9092 \
+  --topic quickstart \
+  --from-beginning
+
+
+
+sudo docker container ls
+
+
+# PYTHON
+sudo apt-get install python3.6
+sudo apt install python3.10-venv
+sudo apt-get -y install python3-pip
+
+
+# penv
+python3 -m venv /home/ubuntu/kafka-bootcamp/venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# JAVA:
+sudo apt install openjdk-18-jdk
