@@ -7,7 +7,7 @@ consumer = Consumer({
     'auto.offset.reset': 'earliest'
 })
 
-consumer.subscribe(['simple_topic'])
+consumer.subscribe(['test_topic'])
 
 while True:
     msg = consumer.poll()

@@ -2,10 +2,10 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 admin = AdminClient({'bootstrap.servers': '127.0.0.1:9092'})
 
-topic1 = NewTopic("test_topic1", num_partitions=3, replication_factor=1)
-topic2 = NewTopic("test_topic2", num_partitions=3, replication_factor=3)  # will fail!
+topic = NewTopic("test_topic", num_partitions=3, replication_factor=1)
+# topic1 = NewTopic("test_topic2", num_partitions=3, replication_factor=3)  # will fail!
 
-new_topics = [topic1, topic2]
+new_topics = [topic]
 
 # Call create_topics to asynchronously create topics. A dict
 # of <topic,future> is returned.
